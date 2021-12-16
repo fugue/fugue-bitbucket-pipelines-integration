@@ -76,7 +76,7 @@ default:
 
 Let's go through this pipeline step by step. First, we let Bitbucket know that this is a pipeline and, in fact, the default pipeline (you can create a separate pipeline for pull requests, for different branches of the repo, and other reasons):
 
-```yaml
+```
 pipelines:
 default:
 ```
@@ -85,7 +85,7 @@ I've opted to have the following steps run sequentially, but I can also opt for 
 
 Next, I'll declare my first step, which uses the hashicorp terraform image to initialize terraform, adjust my terraform formatting to hashicorp canonical standards, and ensure the validity of my terraform (for example, ensuring I have declared all of my variables and modules):
 
-```yaml
+```
 - step:
 	name: 1 - Initialize, Format, and Validate Terraform
 	image: hashicorp/terraform
@@ -96,7 +96,7 @@ Next, I'll declare my first step, which uses the hashicorp terraform image to in
 
 The second step in my pipeline harnesses the power of Regula by automatically detecting any IaC files (terraform, cloudformation, and kubernetes manifests) in the root or any child directories, and scanning every IaC file detected in my repository against CIS Benchmark standards (want to scan for other compliance families like HIPAA, NIST 800-53, SOC2, PCI DSS, CSA, or AWS WAF out of the box? Email sales@fugue.co):
 
-```yaml
+```
 - step:
 	name: 2 - Scan Terraform Locally for Security and Compliance with CIS Benchmarks
 	image: fugue/regula
@@ -109,7 +109,7 @@ The second step in my pipeline harnesses the power of Regula by automatically de
 
 The final step re-initializes terraform and engages the hashicorp terraform image again, because [each step in the Bitbucket pipeline runs a separate Docker container](https://support.atlassian.com/bitbucket-cloud/docs/configure-bitbucket-pipelinesyml/), so declared dependencies do not carry over between steps. The final step then creates a terraform plan and applies the plan:
 
-```yaml
+```
 - step:
 	name: 3 - Plan and Apply Secure, Valid Terraform
 	image: hashicorp/terraform
