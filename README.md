@@ -46,7 +46,7 @@ touch bitbucket-pipelines.yml
 
 Copy and paste the following into the `bitbucket-pipelines.yml` file:
 
-```yaml
+```
 pipelines:
 default:
 	- step:
