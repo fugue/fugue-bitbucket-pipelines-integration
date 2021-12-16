@@ -1,0 +1,10 @@
+environment-id:
+exclude: []
+format: text
+input-type:
+- auto
+no-built-ins: false
+no-ignore: false
+only: []
+severity: unknown
+sync: false
