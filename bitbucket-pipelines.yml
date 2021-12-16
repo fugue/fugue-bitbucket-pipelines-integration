@@ -1,0 +1,29 @@
+# Deploy Cloud Infrastructure Securely With Fugue, Terraform, and BitBucket Pipelines
+
+# This is a template that automates the security and compliance scanning of Terraform infrastructure with Fugue.
+
+pipelines:
+  default:
+    - step:
+        name: 1 - Initialize, Format, and Validate Terraform
+        image: hashicorp/terraform
+        script:
+          - terraform init && terraform fmt
+          - terraform validate
+    - step:
+        name: 2 - Scan Terraform Locally for Security and Compliance with CIS Benchmarks
+        image: fugue/regula
+        script:
+          # Run in root directory first
+          - regula run ./*.tf
+          # Run in child directories next
+          - regula run ./*/*.tf
+    - step:
+        name: 3 - Plan and Apply Secure, Valid Terraform
+        image: hashicorp/terraform
+        deployment: Production
+        trigger: manual
+        script:
+          - terraform init
+          - terraform plan
+          - terraform apply -auto-approve
